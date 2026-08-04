@@ -1,0 +1,7 @@
+2026-08-04 23:06:00,661 | INFO | Target selected: example.com
+2026-08-04 23:06:00,662 | INFO | Starting reconnaissance for example.com
+2026-08-04 23:06:00,662 | INFO | Running command: theHarvester -d example.com -b crtsh
+2026-08-04 23:06:00,667 | ERROR | Command not found: theHarvester
+2026-08-04 23:06:00,667 | INFO | Running command: gau example.com
+2026-08-04 23:06:00,669 | ERROR | Command not found: gau
+2026-08-04 23:06:00,670 | INFO | Reconnaissance completed.
