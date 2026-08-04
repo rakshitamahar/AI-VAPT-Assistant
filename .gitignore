@@ -1,0 +1,18 @@
+# Virtual Environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Logs
+logs/
+
+# Generated outputs
+outputs/
+
+# Reports
+reports/
+
+# VS Code
+.vscode/
