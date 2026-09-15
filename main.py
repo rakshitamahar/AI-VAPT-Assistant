@@ -1,6 +1,7 @@
 import argparse
 import logging
 
+from modules.scanner import run_gobuster
 from core.logger import setup_logger
 from core.result_writer import save_results
 from modules.recon import run_recon
@@ -44,10 +45,16 @@ def main():
     # Run reconnaissance
     results = run_recon(args.target)
 
-    # Save structured reconnaissance results
+    # Run Gobuster
+    gobuster_result = run_gobuster(args.target)
+
+    # Add Gobuster result to reconnaissance results
+    results.append(gobuster_result)
+
+    # Save all structured reconnaissance results
     result_file = save_results(
-        args.target,
-        results
+    args.target,
+    results
     )
 
     logging.info(

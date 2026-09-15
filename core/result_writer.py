@@ -21,6 +21,9 @@ def save_results(target, results):
         elif result.tool == "gau":
             output_file = "gau.txt"
 
+        elif result.tool == "gobuster":
+            output_file = "gobuster.txt"
+
         tools[result.tool] = {
             "status": result.status,
             "return_code": result.return_code,
