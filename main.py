@@ -1,7 +1,7 @@
 import argparse
 import logging
 
-from modules.scanner import run_gobuster
+from modules.scanner import run_gobuster, run_nmap
 from core.logger import setup_logger
 from core.result_writer import save_results
 from modules.recon import run_recon
@@ -50,6 +50,12 @@ def main():
 
     # Add Gobuster result to reconnaissance results
     results.append(gobuster_result)
+
+    # Run Nmap
+    nmap_result = run_nmap(args.target)
+
+    # Add Nmap result to reconnaissance results
+    results.append(nmap_result)
 
     # Save all structured reconnaissance results
     result_file = save_results(

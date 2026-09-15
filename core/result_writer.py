@@ -24,6 +24,9 @@ def save_results(target, results):
         elif result.tool == "gobuster":
             output_file = "gobuster.txt"
 
+        elif result.tool == "nmap":
+            output_file = "nmap.txt"
+
         tools[result.tool] = {
             "status": result.status,
             "return_code": result.return_code,
