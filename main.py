@@ -1,6 +1,7 @@
 import argparse
 import logging
 
+from core.nmap_parser import parse_nmap_output
 from modules.scanner import run_gobuster, run_nmap
 from core.logger import setup_logger
 from core.result_writer import save_results
@@ -57,10 +58,18 @@ def main():
     # Add Nmap result to reconnaissance results
     results.append(nmap_result)
 
+    # Parse Nmap output
+    nmap_data = parse_nmap_output("outputs/nmap.txt")
+
+    logging.info(
+        f"Nmap parsed successfully: {len(nmap_data['ports'])} ports found"
+    )
+
     # Save all structured reconnaissance results
     result_file = save_results(
     args.target,
-    results
+    results,
+    nmap_data
     )
 
     logging.info(

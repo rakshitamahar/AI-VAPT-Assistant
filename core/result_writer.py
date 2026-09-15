@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 
-def save_results(target, results):
+def save_results(target, results, nmap_data=None):
     """
     Save structured reconnaissance results as JSON.
     """
@@ -35,8 +35,9 @@ def save_results(target, results):
         }
 
     data = {
-        "target": target,
-        "tools": tools
+       "target": target,
+       "tools": tools,
+       "nmap_data": nmap_data
     }
 
     output_file = output_dir / "recon_results.json"
