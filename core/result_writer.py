@@ -2,55 +2,63 @@ import json
 from pathlib import Path
 
 
-def save_results(target, results, nmap_data=None):
+def save_results(
+    target,
+    results,
+    nmap_data=None,
+    vulnerability_data=None,
+    formatted_vulnerabilities=None
+):
     """
-    Save structured reconnaissance results as JSON.
+    Save structured reconnaissance, vulnerability,
+    and formatted evidence results.
     """
 
     output_dir = Path("outputs")
     output_dir.mkdir(exist_ok=True)
 
+    output_file = output_dir / "recon_results.json"
+
     tools = {}
 
+    filename_map = {
+        "theHarvester": "harvester.txt",
+        "gau": "gau.txt",
+        "gobuster": "gobuster.txt",
+        "nmap": "nmap.txt"
+    }
+
     for result in results:
-        output_file = None
 
-        if result.tool == "theHarvester":
-            output_file = "harvester.txt"
+        tool_name = result.tool
 
-        elif result.tool == "gau":
-            output_file = "gau.txt"
-
-        elif result.tool == "gobuster":
-            output_file = "gobuster.txt"
-
-        elif result.tool == "nmap":
-            output_file = "nmap.txt"
-
-        tools[result.tool] = {
+        tools[tool_name] = {
             "status": result.status,
             "return_code": result.return_code,
-            "output_file": output_file,
+            "output_file": filename_map.get(
+                tool_name
+            ),
             "error": result.error
         }
 
-    data = {
-       "target": target,
-       "tools": tools,
-       "nmap_data": nmap_data
+    structured_results = {
+        "target": target,
+        "tools": tools,
+        "nmap_data": nmap_data or {},
+        "vulnerability_data": (
+            vulnerability_data or []
+        ),
+        "formatted_vulnerabilities": (
+            formatted_vulnerabilities or []
+        )
     }
 
-    output_file = output_dir / "recon_results.json"
-
-    with open(
-        output_file,
-        "w",
-        encoding="utf-8"
-    ) as file:
-        json.dump(
-            data,
-            file,
+    output_file.write_text(
+        json.dumps(
+            structured_results,
             indent=4
-        )
+        ),
+        encoding="utf-8"
+    )
 
     return output_file

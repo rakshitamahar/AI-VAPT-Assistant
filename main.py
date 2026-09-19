@@ -6,6 +6,8 @@ from modules.scanner import run_gobuster, run_nmap
 from core.logger import setup_logger
 from core.result_writer import save_results
 from modules.recon import run_recon
+from modules.vulnerability import analyze_nmap_services
+from core.vulnerability_formatter import format_vulnerability_results
 
 
 def print_banner():
@@ -60,16 +62,35 @@ def main():
 
     # Parse Nmap output
     nmap_data = parse_nmap_output("outputs/nmap.txt")
+    vulnerability_results = analyze_nmap_services(
+        nmap_data
+    )
+    formatted_vulnerabilities = format_vulnerability_results(
+    vulnerability_results
+    )
 
     logging.info(
-        f"Nmap parsed successfully: {len(nmap_data['ports'])} ports found"
+    f"Formatted vulnerability findings: "
+    f"{len(formatted_vulnerabilities)}"
+    )
+
+    logging.info(
+        f"Vulnerability analysis completed: "
+        f"{len(vulnerability_results)} services analyzed"
+    )
+
+    logging.info(
+        f"Nmap parsed successfully:"
+        f" {len(nmap_data['ports'])} ports found"
     )
 
     # Save all structured reconnaissance results
     result_file = save_results(
     args.target,
     results,
-    nmap_data
+    nmap_data,
+    vulnerability_results,
+    formatted_vulnerabilities
     )
 
     logging.info(
